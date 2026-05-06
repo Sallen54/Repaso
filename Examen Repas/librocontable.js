@@ -26,10 +26,10 @@ async function cargarDatos() {
     let informacio = await fetch('data.json');
     datos          = await informacio.json()
     console.log(datos);
-    guardarDatos(datos);
+    guardarDatosStoragee(datos);
 }
 
-function guardarDatos(datos) {
+function guardarDatosStorage(datos) {
     let oldData = JSON.parse(localStorage.getItem('datos')) || []; 
     oldData.push(...datos);
     localStorage.setItem('datos',JSON.stringify(oldData));
