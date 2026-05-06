@@ -4,6 +4,7 @@ function main() {
 // Agregar evento al formulario para manejar el envío de datos
 let formulario = document.getElementById("form-libro-contable");
 
+// Evento para manejar el envío del formulario
 formulario.addEventListener("submit", function(event) {
     event.preventDefault();
     
@@ -20,6 +21,7 @@ formulario.addEventListener("submit", function(event) {
 }
 // Función para agregar un nuevo registro a la tabla
 function agregarRegistro(fecha, concepto, tipo, importe, saldo) {
+
     let tabla = document.getElementById("tabla-libro-contable").getElementsByTagName('tbody')[0];
     let nuevaFila = tabla.insertRow();
 
@@ -28,12 +30,15 @@ function agregarRegistro(fecha, concepto, tipo, importe, saldo) {
     let celdaTipo = nuevaFila.insertCell(2);
     let celdaImporte = nuevaFila.insertCell(3);
     let celdaSaldo = nuevaFila.insertCell(4);
+    // Agregar datos a las celdas
+    celdaFecha.innerText = fecha;
+    celdaConcepto.innerText = concepto;
+    celdaTipo.innerText = tipo;
+    celdaImporte.innerText = importe;
+    celdaSaldo.innerText = saldo;
 
-    celdaFecha.innerHTML = fecha;
-    celdaConcepto.innerHTML = concepto;
-    celdaTipo.innerHTML = tipo;
-    celdaImporte.innerHTML = importe;
-    celdaSaldo.innerHTML = saldo;
+    // Actualizar el saldo actual
+    document.getElementById("saldo-actual").innerText = saldo;
     
 
 
@@ -81,3 +86,14 @@ document.getElementById("tipo").addEventListener("change", function() {
         this.classList.add("is-invalid");
     }
 });
+// CheckValidity para el importe
+document.getElementById("importe").addEventListener("input", function() {
+    if (this.checkValidity()) {
+        this.classList.remove("is-invalid");
+        this.classList.add("is-valid");
+    } else {
+        this.classList.remove("is-valid");
+        this.classList.add("is-invalid");
+    }
+});
+
