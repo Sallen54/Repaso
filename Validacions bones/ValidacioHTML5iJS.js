@@ -26,7 +26,6 @@ function validarNom () {
 
 }
 
-
 function validarNeix (){
     var element = document.getElementById("neix");
     if (!element.checkValidity()){

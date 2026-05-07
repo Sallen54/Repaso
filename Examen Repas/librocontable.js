@@ -5,19 +5,28 @@ let ara = new Date(Date.now()).toISOString().split('T')[0];
 
 async function main() {
     let formulario = document.getElementById("form-libro-contable");
+
+    document.getElementById("grabar").addEventListener("click", validar, false);
+    document.getElementById("fecha").setAttribute("max", ara);
+    document.getElementById("concepto").setAttribute("maxlength", "50");
+
     formulario.addEventListener("submit", function (event) {
+
+        if (event.submitter?.id === "grabar") {
+            return;
+        }
         event.preventDefault();
 
         let fecha = document.getElementById("fecha").value;
         let concepto = document.getElementById("concepto").value;
         let tipo = document.getElementById("tipo").value;
         let importe = document.getElementById("importe").value;
+
         agregarRegistro(fecha, concepto, tipo, importe);
 
         formulario.reset();
     });
-    document.getElementById("grabar").addEventListener("click", validar, false);
-    document.getElementById("fecha").setAttribute("max", ara);
+
 
     await cargarDatos();
     pintarDatos();
@@ -44,7 +53,7 @@ function pintarDatos() {
     let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
 
     let tabla = document.getElementById('tabla-libro-contable');
-    
+
     while (tabla.firstChild) {
         tabla.removeChild(tabla.firstChild);
     }
@@ -63,7 +72,7 @@ function pintarDatos() {
 
         let fecha = document.createElement('td');
         let fechaNode = document.createTextNode(element.fecha);
-        
+
 
         fecha.appendChild(fechaNode);
         fila.appendChild(fecha);
@@ -86,19 +95,39 @@ function pintarDatos() {
         let saldo = document.createElement('td');
         let saldoNode = document.createTextNode(element.saldo);
         saldo.appendChild(saldoNode);
+
+        if (parseFloat(element.saldo) < 0) {
+            saldo.classList.add("bg-danger", "text-white");
+        }
         fila.appendChild(saldo);
 
         tabla.appendChild(fila);
     });
-
+    calcularSaldoTotal();
 }
 
-function calcularSaldo(tipo, importe) {
-    let saldoActual = document.getElementById("saldo-actual")?.innerText || "0";
-    if (tipo === "D") {
-        return parseFloat(saldoActual) + parseFloat(importe);
+function calcularSaldoTotal() {
+
+    let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
+
+    let total = datosStorage.reduce((acc, reg) => {
+
+        if (reg.tipo === 'H') {
+            return acc + parseFloat(reg.importe);
+        } else {
+            return acc - parseFloat(reg.importe);
+        }
+
+    }, 0);
+
+    let saldoTotal = document.getElementById("saldo-total");
+
+    saldoTotal.textContent = total.toFixed(2);
+
+    if (total < 0) {
+        saldoTotal.classList.add("text-danger");
     } else {
-        return parseFloat(saldoActual) - parseFloat(importe);
+        saldoTotal.classList.remove("text-danger");
     }
 }
 
@@ -110,8 +139,8 @@ function borrarRegistro(index) {
 
 function agregarRegistro(fecha, concepto, tipo, importe) {
     let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
-    let saldoAcumulado = datosStorage.reduce((acc, reg) => reg.tipo === 'D' ? acc + parseFloat(reg.importe) : acc - parseFloat(reg.importe), 0);
-    if (tipo === 'D') {
+    let saldoAcumulado = datosStorage.reduce((acc, reg) => reg.tipo === 'H' ? acc + parseFloat(reg.importe) : acc - parseFloat(reg.importe), 0 );
+    if (tipo === 'H') {
         saldoAcumulado += parseFloat(importe);
     } else {
         saldoAcumulado -= parseFloat(importe);
@@ -141,15 +170,52 @@ function validarFecha() {
     return true;
 }
 
+function validarConcepto() {
+    var element = document.getElementById("concepto");
+    if (!element.checkValidity()) {
+        if (element.validity.valueMissing) {
+            error(element, "Debes introducir un concepto.");
+        }
+        if (element.validity.patternMismatch) {
+            error(element, "El conceprto tiene que ser de maximo 50 caracteres.");
+        }
+        //error(element);
+        return false;
+    }
+    return true;
+}
+
+function validarTipo() {
+    var element = document.getElementById("tipo");
+    if (!element.checkValidity()) {
+        if (element.validity.valueMissing) {
+            error(element, "Debes introducir un tipo.");
+        }
+        //error(element);
+        return false;
+    }
+    return true;
+}
+
+function validarImporte() {
+    var element = document.getElementById("importe");
+    if (!element.checkValidity()) {
+        if (element.validity.valueMissing) {
+            error(element, "Debes introducir un importe");
+        }
+        //error(element);
+        return false;
+    }
+    return true;
+}
+
 
 function validar(e) {
     esborrarError();
     e.preventDefault();
 
-    if (validarFecha() && confirm("Confirma si vols enviar el formulari")) {
-
-        return true;
-
+    if (validarFecha() && validarConcepto() && validarTipo() && validarImporte() && confirm("Confirma si vols enviar el formulari")) {
+        document.getElementById("form-libro-contable").requestSubmit();
     } else {
         return false;
     }

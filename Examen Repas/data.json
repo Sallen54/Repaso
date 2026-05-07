@@ -2,22 +2,22 @@
   {
     "fecha": "2026-05-01",
     "concepto": "Venta de productos",
-    "tipo": "D",
-    "importe": 1500.00,
-    "saldo": -1500.00
+    "tipo": "H",
+    "importe": 15,
+    "saldo": 15
   },
   {
     "fecha": "2026-05-02",
     "concepto": "Pago de alquiler",
-    "tipo": "H",
-    "importe": 500.00,
-    "saldo": 100
+    "tipo": "D",
+    "importe": 45,
+    "saldo": -30
   },
   {
     "fecha": "2026-05-03",
     "concepto": "Compra de materiales",
     "tipo": "H",
-    "importe": 300.00,
-    "saldo": 700.00
+    "importe": 100,
+    "saldo": 70
   }
 ]

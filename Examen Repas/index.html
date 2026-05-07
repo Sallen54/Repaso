@@ -31,12 +31,13 @@
                         </div>
                         <div class="col-auto">
                             <label for="concepto" class="col-form-label">Concepto:</label>
-                            <input type="text" id="concepto" name="concepto" class="form-control" required>
+                            <input type="text" id="concepto" name="concepto" class="form-control" maxlength="50"
+                                required>
                         </div>
                         <div class="col-auto">
                             <label for="tipo" class="col-form-label">D/H:</label>
                             <select id="tipo" name="tipo" class="form-select" required>
-                                <option value="">Seleccione</option>
+                                <option value="">D/H</option>
                                 <option value="D">D</option>
                                 <option value="H">H</option>
                             </select>
@@ -46,15 +47,12 @@
                             <input type="number" id="importe" name="importe" class="form-control" step="0.01" min="0.01"
                                 required>
                         </div>
-
-
                     </div>
                     <div id="missatgeError" class="text-danger col-auto">
-
                     </div>
                 </form>
                 <table class="table table-bordered text-center bg-secondary">
-                    <thead class="bg-secondary" >
+                    <thead class="bg-secondary">
                         <tr>
                             <th class="bg-secondary-subtle">Borrar</th>
                             <th class="bg-secondary-subtle">Fecha</th>
@@ -67,6 +65,12 @@
                     <tbody id="tabla-libro-contable">
                     </tbody>
                 </table>
+                <div class="mt-3 text-danger">
+                    <h3>
+                        Saldo total:
+                        <span id="saldo-total">0.00</span> €
+                    </h3>
+                </div>
             </div>
         </div>
     </div>
