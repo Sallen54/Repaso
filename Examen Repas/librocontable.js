@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", main);
 let datos = [];
-function main() {
-    // Agregar evento al formulario para manejar el envío de datos
+let datosFormulario = [];
+
+async function main() {
     let formulario = document.getElementById("form-libro-contable");
 
-    // Evento para manejar el envío del formulario
     formulario.addEventListener("submit", function (event) {
         event.preventDefault();
+
+        if (!formulario.checkValidity()) {
+            formulario.reportValidity();
+            return;
+        }
 
         let fecha = document.getElementById("fecha").value;
         let concepto = document.getElementById("concepto").value;
@@ -14,29 +19,34 @@ function main() {
         let importe = document.getElementById("importe").value;
         let saldo = calcularSaldo(tipo, importe);
         agregarRegistro(fecha, concepto, tipo, importe, saldo);
-        // Limpiar el formulario después de agregar el registro
-        formulario.reset();
 
+        formulario.reset();
     });
-    cargarDatos();
-    pintarDatos()
+
+    await cargarDatos();
+    pintarDatos();
+    addValidationListeners();
 }
 
 async function cargarDatos() {
+    let datosAlmacenados = JSON.parse(localStorage.getItem('datos'));
+    if (datosAlmacenados && datosAlmacenados.length > 0) {
+        datos = datosAlmacenados;
+        return;
+    }
+
     let informacio = await fetch('data.json');
-    datos = await informacio.json()
+    datos = await informacio.json();
     console.log(datos);
     guardarDatosStorage(datos);
 }
 
 function guardarDatosStorage(datos) {
-    let oldData = JSON.parse(localStorage.getItem('datos')) || [];
-    oldData.push(...datos);
-    localStorage.setItem('datos', JSON.stringify(oldData));
+    localStorage.setItem('datos', JSON.stringify(datos));
 }
 
 function pintarDatos() {
-    let datosStorage = JSON.parse(localStorage.getItem('datos'))
+    let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
 
     let tabla = document.getElementById('tabla-libro-contable');
 
@@ -82,54 +92,51 @@ function pintarDatos() {
 }
 
 function calcularSaldo(tipo, importe) {
-    let saldoActual = document.getElementById("saldo-actual").innerText;
-    if (tipo === "Ingreso") {
+    let saldoActual = document.getElementById("saldo-actual")?.innerText || "0";
+    if (tipo === "D") {
         return parseFloat(saldoActual) + parseFloat(importe);
     } else {
         return parseFloat(saldoActual) - parseFloat(importe);
     }
+}
 
+function addValidationListeners() {
+    const campos = [
+        { id: "fecha", event: "input" },
+        { id: "concepto", event: "input" },
+        { id: "tipo", event: "change" },
+        { id: "importe", event: "input" }
+    ];
+
+    campos.forEach(({ id, event }) => {
+        const elemento = document.getElementById(id);
+        if (!elemento) return;
+
+        elemento.addEventListener(event, function () {
+            if (this.checkValidity()) {
+                this.classList.remove("is-invalid");
+                this.classList.add("is-valid");
+            } else {
+                this.classList.remove("is-valid");
+                this.classList.add("is-invalid");
+            }
+        });
+    });
+}
+
+function borrarRegistro(index) {
+    datos.splice(index, 1);
+    guardarDatosStorage(datos);
+    pintarDatos();
+}
+
+function agregarRegistro(fecha, concepto, tipo, importe, saldo) {
+  let nuevoRegistro = { fecha, concepto, tipo, importe, saldo };
+  datosFormulario.push(nuevoRegistro);
+  datos.push(nuevoRegistro);
+  guardarDatosStorage(datos);
+  pintarDatos();
 }
 
 
-//CheackValidity para la fecha
-document.getElementById("fecha").addEventListener("change", function () {
-    if (this.checkValidity()) {
-        this.classList.remove("is-invalid");
-        this.classList.add("is-valid");
-    } else {
-        this.classList.remove("is-valid");
-        this.classList.add("is-invalid");
-    }
-});
-// CheckValidity para el concepto
-document.getElementById("concepto").addEventListener("input", function () {
-    if (this.checkValidity()) {
-        this.classList.remove("is-invalid");
-        this.classList.add("is-valid");
-    } else {
-        this.classList.remove("is-valid");
-        this.classList.add("is-invalid");
-    }
-});
-// CheckValidity para el tipo
-document.getElementById("tipo").addEventListener("change", function () {
-    if (this.checkValidity()) {
-        this.classList.remove("is-invalid");
-        this.classList.add("is-valid");
-    } else {
-        this.classList.remove("is-valid");
-        this.classList.add("is-invalid");
-    }
-});
-// CheckValidity para el importe
-document.getElementById("importe").addEventListener("input", function () {
-    if (this.checkValidity()) {
-        this.classList.remove("is-invalid");
-        this.classList.add("is-valid");
-    } else {
-        this.classList.remove("is-valid");
-        this.classList.add("is-invalid");
-    }
-});
 

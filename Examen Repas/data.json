@@ -4,14 +4,14 @@
     "concepto": "Venta de productos",
     "tipo": "D",
     "importe": 1500.00,
-    "saldo": 1500.00
+    "saldo": -1500.00
   },
   {
     "fecha": "2026-05-02",
     "concepto": "Pago de alquiler",
     "tipo": "H",
     "importe": 500.00,
-    "saldo": 1000.00
+    "saldo": 100
   },
   {
     "fecha": "2026-05-03",
