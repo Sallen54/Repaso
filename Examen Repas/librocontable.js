@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", main);
+
 let datos           = [];
 let datosFormulario = [];
 let ara = new Date(Date.now()).toISOString().split('T')[0];
@@ -10,7 +11,6 @@ async function main() {
     document.getElementById("concepto").setAttribute("maxlength", "50");
 
     formulario.addEventListener("submit", function (event) {
-
         if (event.submitter?.id === "grabar") {
             return;
         }
@@ -53,7 +53,7 @@ function pintarDatos() {
     }
     datosStorage.forEach((element, index) => {
         let fila = document.createElement('tr');
-
+        fila.classList.add("fs-5");
         let borrar        = document.createElement('td');
         let btnBorrar     = document.createElement('button');
         let btnBorrarText = document.createTextNode('Borrar');
