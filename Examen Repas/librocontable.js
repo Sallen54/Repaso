@@ -44,6 +44,7 @@ function pintarDatos() {
     let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
 
     let tabla = document.getElementById('tabla-libro-contable');
+    
     while (tabla.firstChild) {
         tabla.removeChild(tabla.firstChild);
     }
@@ -57,10 +58,13 @@ function pintarDatos() {
         btnBorrar.appendChild(btnBorrarText);
         btnBorrar.addEventListener('click', () => borrarRegistro(index));
         borrar.appendChild(btnBorrar);
+        btnBorrar.classList.add("btn", "btn-danger", "btn-sm");
         fila.appendChild(borrar);
 
         let fecha = document.createElement('td');
         let fechaNode = document.createTextNode(element.fecha);
+        
+
         fecha.appendChild(fechaNode);
         fila.appendChild(fecha);
 
