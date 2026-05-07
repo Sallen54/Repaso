@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", main);
-let datos = [];
+let datos           = [];
 let datosFormulario = [];
 let ara = new Date(Date.now()).toISOString().split('T')[0];
 
 async function main() {
     let formulario = document.getElementById("form-libro-contable");
-
     document.getElementById("grabar").addEventListener("click", validar, false);
     document.getElementById("fecha").setAttribute("max", ara);
     document.getElementById("concepto").setAttribute("maxlength", "50");
@@ -26,8 +25,6 @@ async function main() {
 
         formulario.reset();
     });
-
-
     await cargarDatos();
     pintarDatos();
 }
@@ -38,7 +35,6 @@ async function cargarDatos() {
         datos = datosAlmacenados;
         return;
     }
-
     let informacio = await fetch('data.json');
     datos = await informacio.json();
     console.log(datos);
@@ -51,18 +47,15 @@ function guardarDatosStorage(datos) {
 
 function pintarDatos() {
     let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
-
     let tabla = document.getElementById('tabla-libro-contable');
-
     while (tabla.firstChild) {
         tabla.removeChild(tabla.firstChild);
     }
-
     datosStorage.forEach((element, index) => {
         let fila = document.createElement('tr');
 
-        let borrar = document.createElement('td');
-        let btnBorrar = document.createElement('button');
+        let borrar        = document.createElement('td');
+        let btnBorrar     = document.createElement('button');
         let btnBorrarText = document.createTextNode('Borrar');
         btnBorrar.appendChild(btnBorrarText);
         btnBorrar.addEventListener('click', () => borrarRegistro(index));
@@ -70,29 +63,27 @@ function pintarDatos() {
         btnBorrar.classList.add("btn", "btn-danger", "btn-sm");
         fila.appendChild(borrar);
 
-        let fecha = document.createElement('td');
+        let fecha     = document.createElement('td');
         let fechaNode = document.createTextNode(element.fecha);
-
-
         fecha.appendChild(fechaNode);
         fila.appendChild(fecha);
 
-        let concepto = document.createElement('td');
+        let concepto     = document.createElement('td');
         let conceptoNode = document.createTextNode(element.concepto);
         concepto.appendChild(conceptoNode);
         fila.appendChild(concepto);
 
-        let dh = document.createElement('td');
+        let dh     = document.createElement('td');
         let dhNode = document.createTextNode(element.tipo);
         dh.appendChild(dhNode);
         fila.appendChild(dh);
 
-        let importe = document.createElement('td');
+        let importe     = document.createElement('td');
         let importeNode = document.createTextNode(element.importe);
         importe.appendChild(importeNode);
         fila.appendChild(importe);
 
-        let saldo = document.createElement('td');
+        let saldo    = document.createElement('td');
         let saldoNode = document.createTextNode(element.saldo);
         saldo.appendChild(saldoNode);
 
@@ -100,18 +91,14 @@ function pintarDatos() {
             saldo.classList.add("bg-danger", "text-white");
         }
         fila.appendChild(saldo);
-
         tabla.appendChild(fila);
     });
     calcularSaldoTotal();
 }
 
 function calcularSaldoTotal() {
-
     let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
-
-    let total = datosStorage.reduce((acc, reg) => {
-
+    let total        = datosStorage.reduce((acc, reg) => {
         if (reg.tipo === 'H') {
             return acc + parseFloat(reg.importe);
         } else {
@@ -119,11 +106,8 @@ function calcularSaldoTotal() {
         }
 
     }, 0);
-
-    let saldoTotal = document.getElementById("saldo-total");
-
+    let saldoTotal         = document.getElementById("saldo-total");
     saldoTotal.textContent = total.toFixed(2);
-
     if (total < 0) {
         saldoTotal.classList.add("text-danger");
     } else {
@@ -138,7 +122,7 @@ function borrarRegistro(index) {
 }
 
 function agregarRegistro(fecha, concepto, tipo, importe) {
-    let datosStorage = JSON.parse(localStorage.getItem('datos')) || [];
+    let datosStorage   = JSON.parse(localStorage.getItem('datos')) || [];
     let saldoAcumulado = datosStorage.reduce((acc, reg) => reg.tipo === 'H' ? acc + parseFloat(reg.importe) : acc - parseFloat(reg.importe), 0 );
     if (tipo === 'H') {
         saldoAcumulado += parseFloat(importe);
@@ -150,7 +134,6 @@ function agregarRegistro(fecha, concepto, tipo, importe) {
     guardarDatosStorage(datos);
     pintarDatos();
 }
-
 
 function validarFecha() {
     var element = document.getElementById("fecha");
@@ -209,11 +192,9 @@ function validarImporte() {
     return true;
 }
 
-
 function validar(e) {
     esborrarError();
     e.preventDefault();
-
     if (validarFecha() && validarConcepto() && validarTipo() && validarImporte() && confirm("Confirma si vols enviar el formulari")) {
         document.getElementById("form-libro-contable").requestSubmit();
     } else {
@@ -221,14 +202,12 @@ function validar(e) {
     }
 }
 
-
 function error(element, missatge) {
     let miss = document.createTextNode(missatge);
     document.getElementById("missatgeError").appendChild(miss);
     element.classList.add("error");
     element.focus();
 }
-
 
 function esborrarError() {
     document.getElementById("missatgeError").textContent = "";
