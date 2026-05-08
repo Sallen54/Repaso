@@ -54,6 +54,7 @@ function pintarDatos() {
     datosStorage.forEach((element, index) => {
         let fila = document.createElement('tr');
         fila.classList.add("fs-5");
+        
         let borrar        = document.createElement('td');
         let btnBorrar     = document.createElement('button');
         let btnBorrarText = document.createTextNode('Borrar');
