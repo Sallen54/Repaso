@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", main);
 // Obtener coches del localStorage
 let datos = JSON.parse(localStorage.getItem("datos"));
+let datosFormulario = [];
 
 function main() {
     let formularioReserva = document.getElementById("formulario-reserva");
@@ -14,13 +15,16 @@ function main() {
         let email = document.getElementById("email").value;
         let telefono = document.getElementById("telefono").value;
         let nota = document.getElementById("nota").value;
-
+        agregarReserva(nombreApellidos, dniCifNia, email, telefono, nota)
         formularioReserva.reset();
 
+        console.log("DatosFormulario actualizado:", datosFormulario);
     });
 
     cargarReserva()
     console.log(datos);
+
+    
 }
 
 function cargarReserva() {
@@ -46,6 +50,21 @@ function cargarReserva() {
     strongs[1].textContent = coche.km + " km";
     strongs[2].textContent = coche.cambio;
     strongs[3].textContent = coche.combustible;
+}
+
+function agregarReserva(nombreApellidos, dniCifNia, email, telefono, nota) {
+    let nuevaReserva = {nombreApellidos, dniCifNia, email, telefono, nota};
+    
+    // Actualitzar la variable global amb les dades del localStorage
+    datosFormulario = JSON.parse(localStorage.getItem('reserva')) || [];
+    datosFormulario.push(nuevaReserva);
+    
+    // Passar la variable global a la funció de guardar
+    guardarDatosStorage(datosFormulario);
+}
+
+function guardarDatosStorage(datos) {
+    localStorage.setItem('reserva', JSON.stringify(datosFormulario));
 }
 
 function validarNom() {
@@ -121,6 +140,7 @@ function validar(e) {
     esborrarError();
     e.preventDefault();
     if (validarNom() && validarDni() && validarEmail() && validarTel() && validarCheck() && confirm("Confirma si vols enviar el formulari")) {
+        document.getElementById("formulario-reserva").requestSubmit();
         return true;
     } else {
         return false;
