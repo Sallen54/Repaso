@@ -128,27 +128,34 @@ function pintarDatos() {
         divAnyo.appendChild(divAnyoNode);
         rowDetalles.appendChild(divAnyo);
         //Kilometros
-        let divKilometro = document.createElement('div');
+        let divKilometro     = document.createElement('div');
         divKilometro.classList.add("col", "p-3", "text-center","fw-bold");
         let divKilometroNode =  document.createTextNode(element.km + "km.");
         divKilometro.appendChild(divKilometroNode);
         rowDetalles.appendChild(divKilometro);
         //Cambio 
-        let divCambio = document.createElement('div');
+        let divCambio     = document.createElement('div');
         divCambio.classList.add("col", "p-3", "text-center","fw-bold");
         let divCambioNode =  document.createTextNode(element.cambio);
         divCambio.appendChild(divCambioNode);
         rowDetalles.appendChild(divCambio);
         //Combustible
-        let divCombustible = document.createElement('div');
+        let divCombustible     = document.createElement('div');
         divCombustible.classList.add("col", "p-3", "text-center","fw-bold");
         let divCombustibleNode =  document.createTextNode(element.combustible);
         divCombustible.appendChild(divCombustibleNode);
         rowDetalles.appendChild(divCombustible);
-        
+
         cardBody.appendChild(rowDetalles);
 
-        //                <a class="btn btn-primary m-3" href="#!">Reservar</a>
+        let btnReservar     = document.createElement('a');
+        let btnReservarNode = document.createTextNode("Reservar");
+        btnReservar.href    = "reserva.html?index=" + index;
+
+        btnReservar.classList.add("btn", "btn-primary", "m-3");
+
+        btnReservar.appendChild(btnReservarNode);
+        cardBody.appendChild(btnReservar);
 
         // body dentro card
         cardPrincipal.appendChild(cardBody);
