@@ -36,7 +36,7 @@ async function cargarDatos() {
         return;
     }
     let informacio = await fetch('data.json');
-    datos = await informacio.json();
+    datos          = await informacio.json();
     console.log(datos);
     guardarDatosStorage(datos);
 }

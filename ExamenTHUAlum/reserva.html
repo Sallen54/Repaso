@@ -80,18 +80,18 @@
                 <div class="card mb-4">
                     <div class="card-header  text-light bg-dark">Cliente</div>
                     <div class="card-body">
-                        <form >
+                        <form id="formulario-reserva" >
                             <div class="form-group">
                                 <label for="nombreApellidos" class="m-2">Nombre y Apellidos</label>
-                                <input type="text" id="nombreApellidos" name="nombreApellidos" class="form-control" required pattern="^[\w ]{4,40}$">
+                                <input type="text" id="nombreApellidos" name="nombreApellidos" class="form-control" required pattern="^[\w ]{4,40}$" >
                             </div>
                             <div class="form-group">
                                 <label for="dniCifNia" class="m-2">DNI, CIF o NIA</label>
-                                <input type="text" id="dniCifNia" nanme="dniCifNia" class="form-control" required pattern='^(\d{9}[A-Z])|([A-Z]\d{8})|(X\d{7}[A-Z])$'>
+                                <input type="text" id="dniCifNia" name="dniCifNia" class="form-control" required pattern='^(\d{9}[A-Z])|([A-Z]\d{8})|(X\d{7}[A-Z])$'>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="m-2">email</label>
-                                <input type="email" id="email" nanme="email" class="form-control" placeholder="ejemplo@dominio.com" required pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="ejemplo@dominio.com" required pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
                             </div>
                             <div class="form-group">
                                 <label for="telefono" class="m-2">telefono</label>

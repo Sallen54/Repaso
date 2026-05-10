@@ -64,11 +64,8 @@ function validarTel (){
 function validar (e) {
     esborrarError ();
     if (validarNom() && validarNeix() && validarTel() && confirm("Confirma si vols enviar el formulari") ){
-
         return true;
-
-    }else{
-        e.preventDefault();
+    } else{
         return false;
     }
 }

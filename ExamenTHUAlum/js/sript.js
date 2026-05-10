@@ -1,12 +1,7 @@
 document.addEventListener("DOMContentLoaded", main);
 let datos = [];
 
-
-
 async function main() {
-
-
-
     await cargarDatos();
     pintarDatos();
     console.log(datos);
