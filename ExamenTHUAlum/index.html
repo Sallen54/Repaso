@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Coches Usados</title>
-        <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/jquery-ui.css">
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/jquery-3.7.1.min.js"></script>
     <script src="./js/jquery-ui.js"></script>
-    <script src="js/bbdd.js" type = "application/javascript"></script>
-    <script src="js/sript.js" type = "application/javascript"></script>
+    <script src="js/bbdd.js" type="application/javascript"></script>
+    <script src="js/sript.js" type="application/javascript"></script>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
                     <button class="btn btn-secondary  mx-2" id="relevancia">Relevancia</button>
                     <button class="btn btn-secondary  mx-2" id="precioAlto">Precio más alto</button>
                     <button class="btn btn-secondary  mx-2" id="precioBajo">Precio mas bajo</button>
-                </p>    
+                </p>
             </div>
         </div>
     </header>
@@ -88,8 +88,9 @@
                     <div class="card-body">
                         <div class="input-group">
                             <input class="form-control" type="text" placeholder="Introduce marca o modelo..."
-                                aria-label="Introduce marca o modelo..." aria-describedby="button-search" id="marcaModelo"/>
-                            <button id="ir" class="btn btn-primary"  type="button">Ir!</button>
+                                aria-label="Introduce marca o modelo..." aria-describedby="button-search"
+                                id="marcaModelo" />
+                            <button id="ir" class="btn btn-primary" type="button">Ir!</button>
                         </div>
                     </div>
                 </div>
@@ -102,14 +103,14 @@
                                 <label for="anyoDesde" class="col-sm-4 col-form-label">Año Matriculación</label>
                                 <div class="col-sm-4">
                                     <select id="anyoDesde" class="form-control mb-3">
-                                        
-                                     
+
+
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
                                     <select id="anyoHasta" class="form-control mb-3">
-                                        
-                                        
+
+
                                     </select>
                                 </div>
                             </div>
@@ -130,7 +131,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <select id="kmHasta" class="form-control mb-3">
-                                        <option  value="1000000" selected>Hasta</option>
+                                        <option value="1000000" selected>Hasta</option>
                                         <option value="5000">5.000</option>
                                         <option value="15000">15.000</option>
                                         <option value="30000">30.000</option>
@@ -138,25 +139,25 @@
                                         <option value="75000">75.000</option>
                                         <option value="100000">100.000</option>
                                         <option value="1000000">+ de 100.000</option>
-                                        
+
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                            <label for="cambio" class="col-sm-2 col-form-label">Cambio</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="cambio" value="" checked>
-                                <label class="form-check-label mb-3" for="inlineCheckbox1" cheched>Todos</label>
-                              </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="cambio" value="Automático">
-                                <label class="form-check-label mb-3" for="inlineCheckbox1">Automático</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="cambio" value="Manual">
-                                <label class="form-check-label mb-3" for="inlineCheckbox2">Manual</label>
-                              </div>
+                                <label for="cambio" class="col-sm-2 col-form-label">Cambio</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="cambio" value="" checked>
+                                    <label class="form-check-label mb-3" for="inlineCheckbox1" cheched>Todos</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="cambio" value="Automático">
+                                    <label class="form-check-label mb-3" for="inlineCheckbox1">Automático</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="cambio" value="Manual">
+                                    <label class="form-check-label mb-3" for="inlineCheckbox2">Manual</label>
+                                </div>
                             </div>
 
                             <div class="form-group row">
@@ -172,18 +173,19 @@
                                 </div>
                             </div>
                             <p class="text-danger" id="errorMensaje"></p>
-                            <button type="reset" class="btn btn-primary mx-2" id="eliminarFiltro">Eliminar filtros</button>
+                            <button type="reset" class="btn btn-primary mx-2" id="eliminarFiltro">Eliminar
+                                filtros</button>
                             <button type="submit" class="btn btn-primary mx-2" id="filtrar">Aplicar</button>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header">THU</div>
+                    <div class="card-body">Tienda especializada en la venta exclusiva de supercoches 2025</div>
                 </div>
             </div>
-            <!-- Side widget-->
-            <div class="card mb-4">
-                <div class="card-header">THU</div>
-                <div class="card-body">Tienda especializada en la venta exclusiva de supercoches 2025</div>
-            </div>
         </div>
-    </div>
     </div>
 
 

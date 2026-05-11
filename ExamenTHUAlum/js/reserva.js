@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", main);
 // Obtener coches del localStorage
-let datos = JSON.parse(localStorage.getItem("datos"));
+let datos           = JSON.parse(localStorage.getItem("datos"));
 let datosFormulario = [];
 
 function main() {
@@ -11,13 +11,13 @@ function main() {
         event.preventDefault();
 
         let nombreApellidos = document.getElementById("nombreApellidos").value;
-        let dniCifNia = document.getElementById("dniCifNia").value;
-        let email = document.getElementById("email").value;
-        let telefono = document.getElementById("telefono").value;
-        let nota = document.getElementById("nota").value;
+        let dniCifNia       = document.getElementById("dniCifNia").value;
+        let email           = document.getElementById("email").value;
+        let telefono        = document.getElementById("telefono").value;
+        let nota            = document.getElementById("nota").value;
         agregarReserva(nombreApellidos, dniCifNia, email, telefono, nota)
         formularioReserva.reset();
-
+        window.location.href = "index.html";
         console.log("DatosFormulario actualizado:", datosFormulario);
     });
 
@@ -30,7 +30,7 @@ function main() {
 function cargarReserva() {
     // Obtener index desde la URL
     let parametros = new URLSearchParams(window.location.search);
-    let index = parametros.get("index");
+    let index      = parametros.get("index");
 
     // Obtener coche seleccionado
     let coche = datos[index];
@@ -64,7 +64,7 @@ function agregarReserva(nombreApellidos, dniCifNia, email, telefono, nota) {
 }
 
 function guardarDatosStorage(datos) {
-    localStorage.setItem('reserva', JSON.stringify(datosFormulario));
+    localStorage.setItem('reserva', JSON.stringify(datos));
 }
 
 function validarNom() {

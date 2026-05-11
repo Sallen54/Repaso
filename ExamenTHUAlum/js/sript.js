@@ -1,16 +1,22 @@
 document.addEventListener("DOMContentLoaded", main);
 let datos = [];
 let busqueda = [];
+let datosFiltrados = [];
 
 async function main() {
     await cargarDatos();
     cargarAnyos();
-    pintarDatos();
+
     document.getElementById("filtrar").addEventListener("click", validar, false);
+    document.getElementById("relevancia").addEventListener("click", ordenarRelevancia);
+    document.getElementById("precioAlto").addEventListener("click", ordenarPrecioAlto);
+    document.getElementById("precioBajo").addEventListener("click", ordenarPrecioBajo);
+    document.getElementById("eliminarFiltro").addEventListener("click", eliminarFiltros);
+
     //filtros recorrer datos
     datos.forEach(coche => {
-        busqueda.push(coche.marca);
-        busqueda.push(coche.modelo);
+        if (!busqueda.includes(coche.marca)) busqueda.push(coche.marca);
+        if (!busqueda.includes(coche.modelo)) busqueda.push(coche.modelo);
     });
 
     $("#marcaModelo").autocomplete({
@@ -19,34 +25,40 @@ async function main() {
 
     $("#ir").click(function () {
         let texto = $("#marcaModelo").val().toLowerCase();
-        let filtrados = datos.filter(coche =>
 
+        datosFiltrados = datos.filter(coche =>
             coche.marca.toLowerCase().includes(texto) ||
             coche.modelo.toLowerCase().includes(texto) ||
-            (coche.marca + " " + coche.modelo)
-                .toLowerCase()
-                .includes(texto)
+            (coche.marca + " " + coche.modelo).toLowerCase().includes(texto)
         );
-        pintarDatos(filtrados);
+
+        pintarDatos(datosFiltrados);
     });
+
+    datosFiltrados = [...datos];
+    pintarDatos(datosFiltrados);
 
     console.log(datos);
 }
 
 async function cargarDatos() {
     let datosAlmacenados = JSON.parse(localStorage.getItem('datos'));
+
     if (datosAlmacenados && datosAlmacenados.length > 0) {
         datos = datosAlmacenados;
         return;
     }
+
     let informacio = await fetch('bbdd.json');
-    datos = await informacio.json();
-    console.log(datos);
+    let json = await informacio.json();
+
+    datos = json.cars;
+
     guardarDatosStorage(datos);
 }
 
 function guardarDatosStorage(datos) {
-    localStorage.setItem('datos', JSON.stringify(datos.cars));
+    localStorage.setItem('datos', JSON.stringify(datos));
 }
 
 function cargarAnyos() {
@@ -60,58 +72,59 @@ function cargarAnyos() {
     opcionDesde.appendChild(
         document.createTextNode("Desde")
     );
-
     anyoDesde.appendChild(opcionDesde);
-
     // Opción Hasta
     let opcionHasta = document.createElement("option");
     opcionHasta.value = "9999";
     opcionHasta.appendChild(
         document.createTextNode("Hasta")
     );
-
     anyoHasta.appendChild(opcionHasta);
-
     // Obtener años sin repetir
     let anyos = [];
-
     datos.forEach(coche => {
 
         if (!anyos.includes(coche.anyo)) {
             anyos.push(coche.anyo);
         }
-
     });
 
     // Ordenar años
     anyos.sort((a, b) => a - b);
-
     // Crear options
     anyos.forEach(anyo => {
-
         // Desde
         let option1 = document.createElement("option");
-
         option1.value = anyo;
-
         option1.appendChild(
             document.createTextNode(anyo)
         );
-
         anyoDesde.appendChild(option1);
-
         // Hasta
         let option2 = document.createElement("option");
-
         option2.value = anyo;
-
         option2.appendChild(
             document.createTextNode(anyo)
         );
-
         anyoHasta.appendChild(option2);
-
     });
+}
+
+function ordenarPrecioAlto() {
+    const base = datosFiltrados.length ? datosFiltrados : datos;
+    datosFiltrados = [...base].sort((a, b) => b.precio - a.precio);
+    pintarDatos(datosFiltrados);
+}
+
+function ordenarPrecioBajo() {
+    const base = datosFiltrados.length ? datosFiltrados : datos;
+    datosFiltrados = [...base].sort((a, b) => a.precio - b.precio);
+    pintarDatos(datosFiltrados);
+}
+
+function ordenarRelevancia() {
+    datosFiltrados = [...datos];
+    pintarDatos(datosFiltrados);
 }
 
 function pintarDatos(array = datos) {
@@ -274,13 +287,52 @@ function validarRangos() {
     return true;
 }
 
+function filtrarDatos() {
 
+    let anyoDesde = parseInt(document.getElementById("anyoDesde").value);
+    let anyoHasta = parseInt(document.getElementById("anyoHasta").value);
+
+    let kmDesde = parseInt(document.getElementById("kmDesde").value);
+    let kmHasta = parseInt(document.getElementById("kmHasta").value);
+
+    let cambio = document.querySelector('input[name="cambio"]:checked').value.toLowerCase();
+    let combustible = document.getElementById("combustible").value.toLowerCase();
+
+    datosFiltrados = datos.filter(coche => (
+        coche.anyo >= anyoDesde &&
+        coche.anyo <= anyoHasta &&
+        coche.km >= kmDesde &&
+        coche.km <= kmHasta &&
+        (cambio === "" || coche.cambio.toLowerCase() === cambio) &&
+        (combustible === "" || coche.combustible.toLowerCase() === combustible)
+    ));
+
+    pintarDatos(datosFiltrados);
+}
+
+function eliminarFiltros(e) {
+    e.preventDefault();
+    // 1. Reset selects
+    document.getElementById("anyoDesde").value = "0";
+    document.getElementById("anyoHasta").value = "9999";
+    document.getElementById("kmDesde").value = "0";
+    document.getElementById("kmHasta").value = "1000000";
+    document.getElementById("combustible").value = "";
+    // radio buttons cambio
+    document.querySelectorAll('input[name="cambio"]')[0].checked = true;
+    // 2. Reset búsqueda
+    document.getElementById("marcaModelo").value = "";
+    // 3. Reset datos filtrados
+    datosFiltrados = [...datos];
+    // 4. Volver a pintar todo
+    pintarDatos(datosFiltrados);
+}
 
 function validar(e) {
     esborrarError();
     e.preventDefault();
     if (validarRangos() && confirm("Confirma si vols filtrar")) {
-        document.getElementById("form-filtro").requestSubmit();
+        filtrarDatos();
         return true;
     } else {
         return false;
