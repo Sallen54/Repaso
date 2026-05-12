@@ -5,6 +5,7 @@ let datosFormulario = [];
 let ara = new Date(Date.now()).toISOString().split('T')[0];
 
 async function main() {
+    
     let formulario = document.getElementById("form-libro-contable");
     document.getElementById("grabar").addEventListener("click", validar, false);
     document.getElementById("fecha").setAttribute("max", ara);
@@ -14,7 +15,7 @@ async function main() {
         if (event.submitter?.id === "grabar") {
             return;
         }
-        event.preventDefault();
+        
 
         let fecha = document.getElementById("fecha").value;
         let concepto = document.getElementById("concepto").value;
@@ -117,9 +118,11 @@ function calcularSaldoTotal() {
 }
 
 function borrarRegistro(index) {
+    if (confirm("¿Deseas eliminar este apunte?")) {
     datos.splice(index, 1);
     guardarDatosStorage(datos);
     pintarDatos();
+    }
 }
 
 function agregarRegistro(fecha, concepto, tipo, importe) {
